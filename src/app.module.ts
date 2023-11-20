@@ -6,7 +6,10 @@ import { AppService } from './app.service';
 import { TodoModule } from './todo/todo.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost/nest'), TodoModule],
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost/nestjs-todo-app'),
+    TodoModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

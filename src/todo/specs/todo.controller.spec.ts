@@ -1,13 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { TodoController } from './todo.controller';
-import { TodoService } from './todo.service';
-import { CreateTodoDTO } from './dto/create-todo.dto';
+import { TodoController } from '../todo.controller';
+import { TodoService } from '../todo.service';
+import { CreateTodoDTO } from '../dto/create-todo.dto';
 
 describe('TodoController', () => {
   const dto: CreateTodoDTO = {
-    name: 'New todo list',
-    status: 'unstarted',
+    name: 'New todo list'
   };
 
   let controller: TodoController;

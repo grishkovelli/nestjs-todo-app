@@ -10,11 +10,10 @@ export class Todo {
 
   @Prop({
     required: true,
-    type: String,
-    enum: ['unstarted', 'started', 'completed'],
-    default: 'unstarted',
+    type: Boolean,
+    default: false,
   })
-  status: string;
+  completed: boolean;
 }
 
 export const TodoSchema = SchemaFactory.createForClass(Todo);

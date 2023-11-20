@@ -2,16 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { TodoDoc } from './todo.schema';
-import { TodoService } from './todo.service';
-import { CreateTodoDTO } from './dto/create-todo.dto';
+import { TodoDoc } from '../todo.schema';
+import { todoInput } from '../../fixtures';
+import { TodoService } from '../todo.service';
 
 describe('TodoService', () => {
-  const dto: CreateTodoDTO = {
-    name: 'New todo list',
-    status: 'unstarted',
-  };
-
   let service: TodoService;
   let model: Model<TodoDoc>;
 
@@ -54,7 +49,7 @@ describe('TodoService', () => {
     it('calls todoModel.create', async () => {
       jest.spyOn(model, 'create');
 
-      await service.addTodo(dto);
+      await service.addTodo(todoInput);
       expect(model.create).toHaveBeenCalledTimes(1);
     });
   });
@@ -63,7 +58,7 @@ describe('TodoService', () => {
     it('calls todoModel.findByIdAndUpdate', async () => {
       jest.spyOn(model, 'findByIdAndUpdate');
 
-      await service.updateTodo('if of the record', dto);
+      await service.updateTodo('if of the record', todoInput);
       expect(model.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     });
   });

@@ -1,4 +1,5 @@
 export interface Todo {
+  id: string;
   name: string;
-  status: 'unstarted' | 'started' | 'completed';
+  completed: boolean;
 }

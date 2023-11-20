@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -14,14 +18,28 @@ export class TodoService {
   }
 
   async addTodo(createTodoDTO: CreateTodoDTO): Promise<Todo> {
-    return this.todoModel.create(createTodoDTO);
+    try {
+      return await this.todoModel.create(createTodoDTO);
+    } catch (error) {
+      throw new UnprocessableEntityException(error);
+    }
   }
 
   async updateTodo(id: string, updateTodoDTO: CreateTodoDTO) {
-    return this.todoModel.findByIdAndUpdate(id, updateTodoDTO, { new: true });
+    try {
+      return await this.todoModel.findByIdAndUpdate(id, updateTodoDTO, {
+        new: true,
+      });
+    } catch (error) {
+      throw new UnprocessableEntityException(error);
+    }
   }
 
   async deleteTodo(id: string): Promise<any> {
-    return await this.todoModel.findByIdAndDelete(id);
+    try {
+      return await this.todoModel.findByIdAndDelete(id);
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
   }
 }
