@@ -8,13 +8,32 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Todo } from './todo.interface';
 import { CreateTodoDTO } from './dto/create-todo.dto';
+interface GetAllArgs {
+  filter: {
+    textStartWith?: string;
+    text?: string;
+  };
+}
 
 @Injectable()
 export class TodoService {
   constructor(@InjectModel('Todo') private readonly todoModel: Model<Todo>) {}
 
-  async getAll(): Promise<Todo[]> {
-    return this.todoModel.find().exec();
+  async getAll(args: GetAllArgs = { filter: {} }): Promise<Todo[]> {
+    const condition: { name?: RegExp } = {};
+    const {
+      filter: { text, textStartWith },
+    } = args;
+
+    if (textStartWith) {
+      condition.name = new RegExp(`^${textStartWith}`, 'i');
+    }
+
+    if (text) {
+      condition.name = new RegExp(`${args.filter.text}`, 'i');
+    }
+
+    return this.todoModel.find(condition).exec();
   }
 
   async addTodo(createTodoDTO: CreateTodoDTO): Promise<Todo> {
