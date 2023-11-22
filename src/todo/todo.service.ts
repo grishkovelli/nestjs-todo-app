@@ -7,31 +7,42 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Todo } from './todo.interface';
+import { TodoArgs } from './types';
+import { textSearchPattern } from '../utils';
 import { CreateTodoDTO } from './dto/create-todo.dto';
-interface GetAllArgs {
-  filter: {
-    textStartWith?: string;
-    text?: string;
+
+class SearchConditionService {
+  private filtersMap: { [key: string]: any } = {
+    name: (value: [string, string]) => textSearchPattern(...value),
+    completed: (value) => value,
   };
+
+  call(args: TodoArgs | undefined = undefined) {
+    const condition: {
+      name?: RegExp;
+      completed?: boolean;
+    } = {};
+
+    if (!args?.filter) {
+      return condition;
+    }
+
+    Object.entries(args.filter).forEach(([field, filters]) => {
+      Object.entries(filters).forEach((properties) => {
+        condition[field] = this.filtersMap[field](properties);
+      });
+    });
+
+    return condition;
+  }
 }
 
 @Injectable()
 export class TodoService {
   constructor(@InjectModel('Todo') private readonly todoModel: Model<Todo>) {}
 
-  async getAll(args: GetAllArgs = { filter: {} }): Promise<Todo[]> {
-    const condition: { name?: RegExp } = {};
-    const {
-      filter: { text, textStartWith },
-    } = args;
-
-    if (textStartWith) {
-      condition.name = new RegExp(`^${textStartWith}`, 'i');
-    }
-
-    if (text) {
-      condition.name = new RegExp(`${args.filter.text}`, 'i');
-    }
+  async getAll(args: TodoArgs | undefined = undefined): Promise<Todo[]> {
+    const condition = new SearchConditionService().call(args);
 
     return this.todoModel.find(condition).exec();
   }

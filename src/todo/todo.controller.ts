@@ -18,7 +18,7 @@ export class TodoController {
 
   @Get()
   getAll(): Promise<Todo[]> {
-    return this.todoService.getAll({ filter: {} });
+    return this.todoService.getAll();
   }
 
   @Post()

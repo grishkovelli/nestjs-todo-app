@@ -1,9 +1,9 @@
 import { InputType, Field } from '@nestjs/graphql';
 
-import { SafeSearch } from '../../common/graphql/scalars';
+import { SafeSearch } from '../scalars';
 
 @InputType()
-export class TodoSearchInput {
+export class SearchFilterInput {
   @Field(() => SafeSearch, { nullable: true })
   readonly textStartWith: string;
 

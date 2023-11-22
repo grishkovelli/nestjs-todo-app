@@ -9,7 +9,7 @@ export class TodoResolver {
   constructor(private readonly todoService: TodoService) {}
 
   @Query(() => [TodoType], { nullable: true })
-  async todos(@Args() filter: TodoArgs): Promise<Todo[]> {
-    return await this.todoService.getAll(filter);
+  async todos(@Args() args: TodoArgs): Promise<Todo[]> {
+    return await this.todoService.getAll(args);
   }
 }

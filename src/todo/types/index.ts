@@ -1,5 +1,5 @@
 import { TodoType } from './todo.type';
 import { TodoArgs } from './todo.args';
-import { TodoSearchInput } from './todo.search.input';
+import { TodoFiltersInput } from './todo.filters.input';
 
-export { TodoType, TodoArgs, TodoSearchInput };
+export { TodoType, TodoArgs, TodoFiltersInput };

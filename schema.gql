@@ -16,10 +16,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Query {
-  todos(filter: TodoSearchInput): [TodoType!]
+  todos(filter: TodoFiltersInput): [TodoType!]
 }
 
-input TodoSearchInput {
+input TodoFiltersInput {
+  name: SearchFilterInput
+  completed: Boolean
+}
+
+input SearchFilterInput {
   textStartWith: SafeSearch
   text: SafeSearch
 }
